@@ -1,0 +1,22 @@
+name: Portfolio notebook consistency
+on:
+  push:
+    paths:
+      - 'portfolio_optimisation_efficient_frontier_REVIEWED.ipynb'
+      - 'tests/test_portfolio_notebook_quality.py'
+      - '.github/workflows/portfolio-notebook-ci.yml'
+  pull_request:
+    paths:
+      - 'portfolio_optimisation_efficient_frontier_REVIEWED.ipynb'
+      - 'tests/test_portfolio_notebook_quality.py'
+      - '.github/workflows/portfolio-notebook-ci.yml'
+  workflow_dispatch:
+jobs:
+  offline-notebook-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p 'test_portfolio_notebook_quality.py' -v
